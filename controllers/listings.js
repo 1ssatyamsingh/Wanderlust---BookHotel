@@ -63,3 +63,35 @@ module.exports.deleteListing = async (req,res)=>{
   req.flash("success","Listing Deleted!");
   res.redirect("/listings");
 };
+
+module.exports.searchListings = async (req,res)=>{
+  let {q} = req.query;
+  if(!q || q.trim() === ""){
+    return res.redirect("/listings");
+  }
+  
+  const searchQuery = {
+    $or: [
+      {title: {$regex: q, $options: "i"}},
+      {location: {$regex: q, $options: "i"}},
+      {description: {$regex: q, $options: "i"}}
+    ]
+  };
+  
+  const allListings = await Listing.find(searchQuery);
+  res.render("listings/index.ejs", {allListings, searchQuery: q});
+};
+
+module.exports.filterByCategory = async (req,res)=>{
+  let {category} = req.params;
+  const validCategories = ["trending", "rooms", "iconic-cities", "mountains", "castles", "amazing-pools", "camping", "farms", "arctic", "domes", "boats"];
+  
+  if(!validCategories.includes(category)){
+    req.flash("error", "Invalid category!");
+    return res.redirect("/listings");
+  }
+  
+  const allListings = await Listing.find({category: category});
+  const categoryDisplay = category.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  res.render("listings/index.ejs", {allListings, filterCategory: category, categoryDisplay});
+};

@@ -11,18 +11,46 @@
     margin-right: 2rem;
     margin-top: 2rem;
     opacity: 0.7;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
   }
 
   .filter:hover {
     opacity: 1;
-    cursor: pointer;
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+    text-decoration: none;
+    color: black;
+  }
+
+  .filter.active {
+    opacity: 1;
+    background-color: #fe424d;
+    color: white;
+    text-decoration: none;
   }
 
   .filter p {
     font-size: 0.8rem;
+    margin: 0.3rem 0;
+    font-weight: bold;
   }
 
-  #tax-info {
+  .filter i {
+    font-size: 1.5rem;
+    color: black;
+  }
+
+  .filter.active i {
+    color: white;
+  }
+
+  .tax-info {
     display: none;
   }
 
@@ -36,53 +64,73 @@
     align-items: center;
     margin-top: 1.75rem;
   }
+
+  .category-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #fe424d;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    z-index: 10;
+  }
+
+  .category-badge i {
+    color: black;
+  }
+
+  .listing-card {
+    position: relative;
+  }
 </style>
 
 <div id="filters">
-  <div class="filter">
+  <a href="/listings/category/trending" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'trending' ? 'active' : '' %>">
     <i class="fa-solid fa-fire"></i>
     <p>Trending</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/rooms" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'rooms' ? 'active' : '' %>">
     <i class="fa-solid fa-bed"></i>
     <p>Rooms</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/iconic-cities" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'iconic-cities' ? 'active' : '' %>">
     <i class="fa-solid fa-mountain-city"></i>
     <p>Iconic Cities</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/mountains" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'mountains' ? 'active' : '' %>">
     <i class="fa-solid fa-mountain"></i>
     <p>Mountains</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/castles" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'castles' ? 'active' : '' %>">
     <i class="fa-brands fa-fort-awesome"></i>
     <p>Castles</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/amazing-pools" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'amazing-pools' ? 'active' : '' %>">
     <i class="fa-solid fa-person-swimming"></i>
     <p>Amazing Pools</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/camping" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'camping' ? 'active' : '' %>">
     <i class="fa-solid fa-campground"></i>
     <p>Camping</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/farms" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'farms' ? 'active' : '' %>">
     <i class="fa-solid fa-cow"></i>
     <p>Farms</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/arctic" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'arctic' ? 'active' : '' %>">
     <i class="fa-regular fa-snowflake"></i>
     <p>Arctic</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/domes" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'domes' ? 'active' : '' %>">
     <i class="fa-solid fa-igloo"></i>
     <p>Domes</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings/category/boats" class="filter <%= typeof filterCategory !== 'undefined' && filterCategory === 'boats' ? 'active' : '' %>">
     <i class="fa-solid fa-ship"></i>
     <p>Boats</p>
-  </div>
+  </a>
 
   <div class="tax-toggle">
     <div class="form-check-reverse form-switch">
@@ -98,6 +146,18 @@
     </div>
   </div>
 </div>
+<% if(typeof searchQuery !== 'undefined') { %>
+  <div class="alert alert-info mt-3 ms-3" role="alert">
+    Search results for "<b><%= searchQuery %></b>" - Found <%= allListings.length %> listing(s)
+    <a href="/listings" class="ms-2">Clear search</a>
+  </div>
+<% } %>
+<% if(typeof filterCategory !== 'undefined') { %>
+  <div class="alert alert-success mt-3 ms-3" role="alert">
+    Showing listings in <b><%= categoryDisplay %></b> category - Found <%= allListings.length %> listing(s)
+    <a href="/listings" class="ms-2">View all listings</a>
+  </div>
+<% } %>
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
   <% for(let listing of allListings){%>
   <a href="/listings/<%= listing._id%>" class="listing-link">
@@ -109,6 +169,26 @@
         style="height: 20rem"
       />
       <div class="card-img-overlay"></div>
+      <div class="category-badge">
+        <% 
+          const categoryIcons = {
+            'trending': 'fa-fire',
+            'rooms': 'fa-bed',
+            'iconic-cities': 'fa-mountain-city',
+            'mountains': 'fa-mountain',
+            'castles': 'fa-fort-awesome',
+            'amazing-pools': 'fa-person-swimming',
+            'camping': 'fa-campground',
+            'farms': 'fa-cow',
+            'arctic': 'fa-snowflake',
+            'domes': 'fa-igloo',
+            'boats': 'fa-ship'
+          };
+          const icon = categoryIcons[listing.category] || 'fa-tag';
+          const displayCategory = listing.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        %>
+        <i class="fa-solid <%= icon %>"></i> <%= displayCategory %>
+      </div>
       <div class="card-body">
         <p class="card-text">
           <b><%= listing.title %></b> <br />

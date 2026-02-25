@@ -34,19 +34,34 @@
         <div class="invalid-feedback">Please enter a short description</div>
       </div>
 
-      <!-- <div class="mb-3">
-        <lable for="image" class="form-label">Image Link</lable>
-        <input
-          type="text"
-          name="listing[image]"
-          placeholder="image URL/Link"
-          class="form-control"
-        />
-      </div> -->
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" class="form-control" required>
+          <option value="">Select a category</option>
+          <option value="trending">Trending</option>
+          <option value="rooms">Rooms</option>
+          <option value="iconic-cities">Iconic Cities</option>
+          <option value="mountains">Mountains</option>
+          <option value="castles">Castles</option>
+          <option value="amazing-pools">Amazing Pools</option>
+          <option value="camping">Camping</option>
+          <option value="farms">Farms</option>
+          <option value="arctic">Arctic</option>
+          <option value="domes">Domes</option>
+          <option value="boats">Boats</option>
+        </select>
+        <div class="invalid-feedback">Please select a category</div>
+      </div>
 
       <div class="mb-3">
         <lable for="image" class="form-label">Upload Listing image</lable>
-        <input type="file" name="listing[image]" class="form-control" />
+        <input
+          type="file"
+          name="listing[image]"
+          class="form-control"
+          required
+        />
+        <div class="invalid-feedback">Please Upload a photo</div>
       </div>
 
       <div class="row">
@@ -73,6 +88,21 @@
           />
           <div class="invalid-feedback">Please enter the location</div>
         </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="mapEmbed" class="form-label"
+          >Map Embed Code (Optional)</label
+        >
+        <textarea
+          name="listing[mapEmbed]"
+          placeholder="Paste Google Maps embed iframe src URL here"
+          class="form-control"
+          rows="2"
+        ></textarea>
+        <small class="form-text text-muted"
+          >e.g., https://www.google.com/maps/embed?pb=...</small
+        >
       </div>
 
       <br />

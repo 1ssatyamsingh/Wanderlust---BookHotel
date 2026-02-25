@@ -8,6 +8,15 @@ const listingSchema  = new Schema({
     requied: true,
   },
   description: String,
+  category: {
+    type: String,
+    enum: ["trending", "rooms", "iconic-cities", "mountains", "castles", "amazing-pools", "camping", "farms", "arctic", "domes", "boats"],
+    default: "trending"
+  },
+  mapEmbed: {
+    type: String,
+    default: ""
+  },
   image: {
     url: String,
     filename: String,
